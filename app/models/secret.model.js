@@ -1,27 +1,26 @@
 const sql = require("./db.js");
 
 // constructor
-const Tutorial = function(tutorial) {
-  this.title = tutorial.title;
-  this.description = tutorial.description;
-  this.published = tutorial.published;
+const Secret = function(tutorial) {
+  this.secretKey = tutorial.secretKey;
+
 };
 
-Tutorial.create = (newTutorial, result) => {
-  sql.query("INSERT INTO tutorials SET ?", newTutorial, (err, res) => {
+Secret.create = (newTutorial, result) => {
+  sql.query("INSERT INTO secrets SET ?", newTutorial, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
       return;
     }
 
-    console.log("created tutorial: ", { id: res.insertId, ...newTutorial });
+    console.log("created secret: ", { id: res.insertId, ...newTutorial });
     result(null, { id: res.insertId, ...newTutorial });
   });
 };
 
-Tutorial.findById = (id, result) => {
-  sql.query(`SELECT * FROM tutorials WHERE id = ${id}`, (err, res) => {
+Secret.findById = (id, result) => {
+  sql.query(`SELECT * FROM secrets WHERE id = ${id}`, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
@@ -29,7 +28,7 @@ Tutorial.findById = (id, result) => {
     }
 
     if (res.length) {
-      console.log("found tutorial: ", res[0]);
+      console.log("found secrets: ", res[0]);
       result(null, res[0]);
       return;
     }
@@ -39,8 +38,8 @@ Tutorial.findById = (id, result) => {
   });
 };
 
-Tutorial.getAll = (title, result) => {
-  let query = "SELECT * FROM tutorials";
+Secret.getAll = (title, result) => {
+  let query = "SELECT * FROM secrets";
 
   if (title) {
     query += ` WHERE title LIKE '%${title}%'`;
@@ -53,27 +52,27 @@ Tutorial.getAll = (title, result) => {
       return;
     }
 
-    console.log("tutorials: ", res);
+    console.log("secrets: ", res);
     result(null, res);
   });
 };
 
-Tutorial.getAllPublished = result => {
-  sql.query("SELECT * FROM tutorials WHERE published=true", (err, res) => {
+Secret.getAllPublished = result => {
+  sql.query("SELECT * FROM secrets WHERE published=true", (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
       return;
     }
 
-    console.log("tutorials: ", res);
+    console.log("secrets: ", res);
     result(null, res);
   });
 };
 
-Tutorial.updateById = (id, tutorial, result) => {
+Secret.updateById = (id, tutorial, result) => {
   sql.query(
-    "UPDATE tutorials SET title = ?, description = ?, published = ? WHERE id = ?",
+    "UPDATE secrets SET title = ?, description = ?, published = ? WHERE id = ?",
     [tutorial.title, tutorial.description, tutorial.published, id],
     (err, res) => {
       if (err) {
@@ -88,14 +87,14 @@ Tutorial.updateById = (id, tutorial, result) => {
         return;
       }
 
-      console.log("updated tutorial: ", { id: id, ...tutorial });
+      console.log("updated secrets: ", { id: id, ...tutorial });
       result(null, { id: id, ...tutorial });
     }
   );
 };
 
-Tutorial.remove = (id, result) => {
-  sql.query("DELETE FROM tutorials WHERE id = ?", id, (err, res) => {
+Secret.remove = (id, result) => {
+  sql.query("DELETE FROM secrets WHERE id = ?", id, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
@@ -108,22 +107,22 @@ Tutorial.remove = (id, result) => {
       return;
     }
 
-    console.log("deleted tutorial with id: ", id);
+    console.log("deleted secrets with id: ", id);
     result(null, res);
   });
 };
 
-Tutorial.removeAll = result => {
-  sql.query("DELETE FROM tutorials", (err, res) => {
+Secret.removeAll = result => {
+  sql.query("DELETE FROM secrets", (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
       return;
     }
 
-    console.log(`deleted ${res.affectedRows} tutorials`);
+    console.log(`deleted ${res.affectedRows} secrets`);
     result(null, res);
   });
 };
 
-module.exports = Tutorial;
+module.exports = Secret;

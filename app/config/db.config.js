@@ -1,6 +1,6 @@
 module.exports = {
-  HOST: "localhost",
-  USER: "root",
-  PASSWORD: "123456",
-  DB: "testdb"
+  HOST: "197.13.27.175",
+  USER: "chihebelfil",
+  PASSWORD: "]BvzuU9(!frZ3)ac",
+  DB: "clickbus"
 };
